@@ -73,10 +73,26 @@ var UserField = graphql.Field{
 	Type: graphql.NewList(UserObject),
 	Args: graphql.FieldConfigArgument{
 		"limit": &graphql.ArgumentConfig{
-			Type: graphql.Int,
+			Type:        graphql.Int,
+			Description: "Limits to the size",
+		},
+		"id": &graphql.ArgumentConfig{
+			Type:        graphql.Int,
+			Description: "Searches by ID",
 		},
 	},
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		id := -1
+		if p.Args["id"] != nil {
+			id = p.Args["id"].(int)
+		}
+		if id != -1 {
+			for _, user := range ListOfUsers {
+				if user.ID == id {
+					return []User{user}, nil
+				}
+			}
+		}
 		// Default limit to all users
 		limit := len(ListOfUsers)
 		if p.Args["limit"] != nil {
