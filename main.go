@@ -70,7 +70,7 @@ var LoginQuery = graphql.Field{
 // UserField contains user query type
 var UserField = graphql.Field{
 	Name: "User",
-	Type: UserObject,
+	Type: graphql.NewList(UserObject),
 	Args: graphql.FieldConfigArgument{
 		"limit": &graphql.ArgumentConfig{
 			Type: graphql.Int,
